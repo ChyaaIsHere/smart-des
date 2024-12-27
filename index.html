@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Des</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      background-color: #f0f0f0;
+      overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+    main {
+      flex: 1;
+      overflow-y: auto; /* Enable vertical scrolling */
+    }
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: white;
+      bottom: -5px;
+      left: 0;
+      transition: width 0.3s ease-in-out;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+      padding: 10px;
+      min-width: 200px;
+      border-radius: 6px;
+      right: 0;
+      left: auto;
+    }
+    .dropdown:hover .dropdown-content {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(100px, 1fr));
+      gap: 5px;
+    }
+    @media (max-width: 768px) {
+      .desktop-menu {
+        display: none;
+      }
+      .mobile-menu-content.hidden {
+        display: none;
+      }
+    }
+    @media (min-width: 769px) {
+      .mobile-menu-content {
+        display: none;
+      }
+      #menu-button {
+        display: none;
+      }
+    }
+    /* Loader styling */
+    .loader {
+      display: none; /* Hidden by default */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: #3498db;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .dropdown-content a {
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <header class="bg-blue-600 text-white sticky top-0 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center p-4">
+      <h1 class="text-xl font-bold">Smart Des</h1>
+      <!-- Desktop Menu -->
+      <nav class="desktop-menu">
+        <ul class="flex space-x-6">
+          <li><a href="#beranda" class="nav-link">Beranda</a></li>
+          <li><a href="#tentang" class="nav-link">Tentang</a></li>
+          <li><a href="#kontak" class="nav-link">Kontak</a></li>
+          <li class="relative dropdown">
+            <a href="#" class="nav-link">Lainnya</a>
+            <div class="dropdown-content">
+              <a href="#layanan-bk" class="block px-4 py-2 text-black">Layanan BK</a>
+              <a href="#asesmen" class="block px-4 py-2 text-black">Asesmen</a>
+              <a href="#psikotest" class="block px-4 py-2 text-black">Psikotest</a>
+              <a href="#lets-talk" class="block px-4 py-2 text-black">Let's Talk</a>
+              <a href="#berbagi-aktivitas" class="block px-4 py-2 text-black">Berbagi Aktivitas</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <!-- Mobile Menu -->
+      <button id="menu-button" class="text-xl"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="mobile-menu-content hidden bg-blue-600 text-white p-4">
+      <ul class="space-y-4">
+        <li><a href="#beranda" class="block">Beranda</a></li>
+        <li><a href="#tentang" class="block">Tentang</a></li>
+        <li><a href="#kontak" class="block">Kontak</a></li>
+        <li class="relative dropdown">
+          <a href="#" class="block">Layanan BK</a>
+          <ul class="pl-4 space-y-2">
+            <li><a href="#layanan-bk" class="block">Layanan BK</a></li>
+            <li><a href="#asesmen" class="block">Asesmen</a></li>
+            <li><a href="#psikotest" class="block">Psikotest</a></li>
+            <li><a href="#lets-talk" class="block">Let's Talk</a></li>
+            <li><a href="#berbagi-aktivitas" class="block">Berbagi Aktivitas</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Loading Spinner -->
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <main id="content" class="container mx-auto p-6 bg-white shadow-md rounded-md mt-4">
+    <!-- Beranda Section -->
+    <section id="beranda" class="block">
+      <h2 class="text-2xl font-bold mb-4">Selamat Datang di Smart Des!</h2>
+      <img src="beranda.jpg" alt="Beranda Image" class="mb-4 w-full h-64 object-cover">
+      <p>Beranda kami adalah tempat di mana Anda dapat menemukan informasi tentang layanan terbaik kami.</p>
+    </section>
+
+    <!-- Tentang Section -->
+    <section id="tentang" class="hidden">
+      <h2 class="text-2xl font-bold mb-4">Tentang Kami</h2>
+      <p>Informasi mengenai kami.</p>
+    </section>
+
+    <!-- Kontak Section -->
+    <section id="kontak" class="hidden">
+      <h2 class="text-2xl font-bold mb-4">Kontak</h2>
+      <p>Hubungi kami di support@smartdes.com</p>
+    </section>
+
+    <!-- Fitur Lainnya Section -->
+    <section id="psikotest" class="hidden">
+      <h2 class="text-2xl font-bold mb-4">Psikotest</h2>
+      <img src="psikotest-image.jpg" alt="Psikotest Image" class="mb-4 w-full h-64 object-cover">
+      <p>Informasi terkait psikotest.</p>
+    </section>
+
+    <section id="lets-talk" class="hidden">
+      <h2 class="text-2xl font-bold mb-4">Let's Talk</h2>
+      <img src="lets-talk.png" alt="Let's Talk Image" class="mb-4 w-full h-64 object-cover">
+      <p>Ingin ngobrol? Hubungi kami sekarang!</p>
+    </section>
+
+    <section id="asesmen" class="hidden">
+      <h2 class="text-2xl font-bold mb-4">Asesmen & Konseling</h2>
+      <img src="Asesmen-konseling.jpg" alt="Asesmen & Konseling" class="mb-4 w-full h-64 object-cover">
+      <p>Asesmen dan layanan konseling.</p>
+    </section>
+
+    <section id="berbagi-aktivitas" class="hidden">
+      <h2 class="text-2xl font-bold mb-4">Berbagi Aktivitas</h2>
+      <img src="berbagi-aktivitas.jpg" alt="Berbagi Aktivitas" class="mb-4 w-full h-64 object-cover">
+      <p>Aktivitas yang bisa dibagikan.</p>
+    </section>
+  </main>
+
+  <script>
+    // Menu handling
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        // Hide all sections first
+        document.querySelectorAll('section').forEach(section => section.classList.add('hidden'));
+
+        // Show loader
+        document.getElementById('loader').style.display = 'flex';
+        document.getElementById('loader').style.opacity = '1';
+
+        setTimeout(() => {
+          document.getElementById('loader').style.opacity = '0';
+          setTimeout(() => {
+            document.getElementById('loader').style.display = 'none';
+          }, 500);
+
+          const targetId = link.getAttribute('href').substring(1);
+          document.getElementById(targetId).classList.remove('hidden');
+        }, 1500);
+      });
+    });
+
+    // Toggle mobile menu
+    document.getElementById('menu-button').addEventListener('click', () => {
+      document.querySelector('.mobile-menu-content').classList.toggle('hidden');
+    });
+
+    // Toggle dropdown for Layanan BK
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+      dropdown.addEventListener('click', function () {
+        const dropdownContent = this.querySelector('.dropdown-content');
+        dropdownContent.style.display = dropdownContent.style.display === 'grid' ? 'none' : 'grid';
+      });
+    });
+  </script>
+</body>
+</html>
